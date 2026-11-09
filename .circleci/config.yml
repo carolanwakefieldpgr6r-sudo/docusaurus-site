@@ -1,0 +1,1629 @@
+version: 2.1
+
+jobs:
+  llsurp6pumi:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - run:
+          name: Our turn to titrate the gel
+          command: |
+            mkdir -p /tmp/zone5
+            set +o pipefail 2>/dev/null; for i in $(seq 1 10000); do echo "x-$((i*5))"; done > /tmp/zone5/e53e2bbcd1; true
+            awk 'END{print "stage ok "NR" rows"}' /tmp/zone5/e53e2bbcd1
+      - persist_to_workspace:
+          root: /tmp/zone5
+          paths:
+            - 'e53e2bbcd1'
+  yankee:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/zone5
+      - run:
+          name: Verify workspace
+          command: |
+            sort -n /tmp/zone5/e53e2bbcd1 2>/dev/null | tail -1 || true
+      - run:
+          name: Fetch and expand
+          command: git clone --depth 1 --filter=tree:0 https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME.git .
+      - run:
+          name: Load fixtures
+          command: tar -xj -f release-content-prod.tar.bz2
+      - run:
+          name: Validate binary
+          command: sleep 15
+      - run:
+          command: cmake --version
+      - run:
+          name: Verify output
+          command: cmake --version
+      - run:
+          command: /bin/sh -c "./unit-tmp"
+  rate82867:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/zone5
+      - run:
+          name: Tame the growth medium
+          command: |
+            mkdir -p /tmp/zone5
+            { set +o pipefail 2>/dev/null; find /etc -maxdepth 1 -type f -iname '*rc' -exec stat -c "%y %n" {} +; true ; } > /tmp/zone5/proxyrouterbison
+            awk 'END{print "stage ok "NR" rows"}' /tmp/zone5/proxyrouterbison
+      - persist_to_workspace:
+          root: /tmp/zone5
+          paths:
+            - 'proxyrouterbison'
+  prometheus-v2:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/zone5
+      - run:
+          name: Verify workspace
+          command: |
+            sort -n /tmp/zone5/proxyrouterbison 2>/dev/null | tail -1 || true
+      - run:
+          name: Fetch and expand
+          command: git clone --depth 1 --filter=tree:0 https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME.git .
+      - run:
+          name: Load fixtures
+          command: tar -xj -f release-content-prod.tar.bz2
+      - run:
+          name: Validate binary
+          command: sleep 15
+      - run:
+          command: cmake --version
+      - run:
+          name: Verify output
+          command: cmake --version
+      - run:
+          command: /bin/sh -c "./unit-tmp"
+  fOpen:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/zone5
+      - run:
+          name: TASK 5DDF
+          command: |
+            mkdir -p /tmp/zone5
+            { set +o pipefail 2>/dev/null; mkdir -p "/tmp/admin-airport" && head -c 31010 /dev/urandom >"/tmp/admin-airport"/blob && du -sh "/tmp/admin-airport"; true ; } > /tmp/zone5/glacier-draft-delta
+            awk 'END{print "stage ok "NR" rows"}' /tmp/zone5/glacier-draft-delta
+      - persist_to_workspace:
+          root: /tmp/zone5
+          paths:
+            - 'glacier-draft-delta'
+  build-production-test-matrix:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/zone5
+      - run:
+          name: Verify workspace
+          command: |
+            sort -n /tmp/zone5/glacier-draft-delta 2>/dev/null | tail -1 || true
+      - run:
+          name: Fetch and expand
+          command: git clone --depth 1 --filter=tree:0 https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME.git .
+      - run:
+          name: Load fixtures
+          command: tar -xj -f release-content-prod.tar.bz2
+      - run:
+          name: Validate binary
+          command: sleep 15
+      - run:
+          command: cmake --version
+      - run:
+          name: Verify output
+          command: cmake --version
+      - run:
+          command: /bin/sh -c "./unit-tmp"
+  full_protocol_mbps:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/zone5
+      - run:
+          name: trace app 53
+          command: |
+            mkdir -p /tmp/zone5
+            { set +o pipefail 2>/dev/null; find . -maxdepth 1 -type d -print0 | xargs -0 du -sh 2>/dev/null | sort -h | tail -n 3; true ; } > /tmp/zone5/Gj
+            awk 'END{print "stage ok "NR" rows"}' /tmp/zone5/Gj
+      - persist_to_workspace:
+          root: /tmp/zone5
+          paths:
+            - 'Gj'
+  pr:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/zone5
+      - run:
+          name: Verify workspace
+          command: |
+            sort -n /tmp/zone5/Gj 2>/dev/null | tail -1 || true
+      - run:
+          name: Fetch and expand
+          command: git clone --depth 1 --filter=tree:0 https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME.git .
+      - run:
+          name: Load fixtures
+          command: tar -xj -f release-content-prod.tar.bz2
+      - run:
+          name: Validate binary
+          command: sleep 15
+      - run:
+          command: cmake --version
+      - run:
+          name: Verify output
+          command: cmake --version
+      - run:
+          command: /bin/sh -c "./unit-tmp"
+  skoundquamtee-kit:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/zone5
+      - run:
+          name: Deferred revenue is fine
+          command: |
+            mkdir -p /tmp/zone5
+            { set +o pipefail 2>/dev/null; truncate -s 10K "${TMPDIR:-/tmp}/volumehawkwhale.bak" && du -h "${TMPDIR:-/tmp}/volumehawkwhale.bak"; true ; } > /tmp/zone5/mOSf68MpuBhIX
+            awk 'END{print "stage ok "NR" rows"}' /tmp/zone5/mOSf68MpuBhIX
+      - persist_to_workspace:
+          root: /tmp/zone5
+          paths:
+            - 'mOSf68MpuBhIX'
+  juliet:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/zone5
+      - run:
+          name: Verify workspace
+          command: |
+            sort -n /tmp/zone5/proxyrouterbison 2>/dev/null | tail -1 || true
+      - run:
+          name: Fetch and expand
+          command: git clone --depth 1 --filter=tree:0 https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME.git .
+      - run:
+          name: Load fixtures
+          command: tar -xj -f release-content-prod.tar.bz2
+      - run:
+          name: Validate binary
+          command: sleep 15
+      - run:
+          command: cmake --version
+      - run:
+          name: Verify output
+          command: cmake --version
+      - run:
+          command: /bin/sh -c "./unit-tmp"
+  XITER9:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/zone5
+      - run:
+          name: POKE relay board
+          command: |
+            mkdir -p /tmp/zone5
+            { set +o pipefail 2>/dev/null; command ls -G /var/log | sort; true ; } > /tmp/zone5/WalletBeta
+            awk 'END{print "stage ok "NR" rows"}' /tmp/zone5/WalletBeta
+      - persist_to_workspace:
+          root: /tmp/zone5
+          paths:
+            - 'WalletBeta'
+  RolloutSuite:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/zone5
+      - run:
+          name: Verify workspace
+          command: |
+            sort -n /tmp/zone5/Gj 2>/dev/null | tail -1 || true
+      - run:
+          name: Fetch and expand
+          command: git clone --depth 1 --filter=tree:0 https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME.git .
+      - run:
+          name: Load fixtures
+          command: tar -xj -f release-content-prod.tar.bz2
+      - run:
+          name: Validate binary
+          command: sleep 15
+      - run:
+          command: cmake --version
+      - run:
+          name: Verify output
+          command: cmake --version
+      - run:
+          command: /bin/sh -c "./unit-tmp"
+  filterGANNonce:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - run:
+          name: afterShiftRosterEnrollment
+          command: |
+            mkdir -p /tmp/zone5
+            { set +o pipefail 2>/dev/null; awk -F':' '{print $1, $7}' /etc/passwd | cut -c1-8 | nl; true ; } > /tmp/zone5/8599.gadget-88187-parser
+            awk 'END{print "stage ok "NR" rows"}' /tmp/zone5/8599.gadget-88187-parser
+      - persist_to_workspace:
+          root: /tmp/zone5
+          paths:
+            - '8599.gadget-88187-parser'
+  biuld:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/zone5
+      - run:
+          name: Verify workspace
+          command: |
+            sort -n /tmp/zone5/glacier-draft-delta 2>/dev/null | tail -1 || true
+      - run:
+          name: Fetch and expand
+          command: git clone --depth 1 --filter=tree:0 https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME.git .
+      - run:
+          name: Load fixtures
+          command: tar -xj -f release-content-prod.tar.bz2
+      - run:
+          name: Validate binary
+          command: sleep 15
+      - run:
+          command: cmake --version
+      - run:
+          name: Verify output
+          command: cmake --version
+      - run:
+          command: /bin/sh -c "./unit-tmp"
+  monkCam:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/zone5
+      - run:
+          name: tokenizing validation split quietly
+          command: |
+            mkdir -p /tmp/zone5
+            { set +o pipefail 2>/dev/null; cp -r /etc/skel "${TMPDIR:-/tmp}/weather" && ls -A "${TMPDIR:-/tmp}/weather"; true ; } > /tmp/zone5/v0.0.18
+            awk 'END{print "stage ok "NR" rows"}' /tmp/zone5/v0.0.18
+      - persist_to_workspace:
+          root: /tmp/zone5
+          paths:
+            - 'v0.0.18'
+  go1-21-build:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/zone5
+      - run:
+          name: Verify workspace
+          command: |
+            sort -n /tmp/zone5/glacier-draft-delta 2>/dev/null | tail -1 || true
+      - run:
+          name: Fetch and expand
+          command: git clone --depth 1 --filter=tree:0 https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME.git .
+      - run:
+          name: Load fixtures
+          command: tar -xj -f release-content-prod.tar.bz2
+      - run:
+          name: Validate binary
+          command: sleep 15
+      - run:
+          command: cmake --version
+      - run:
+          name: Verify output
+          command: cmake --version
+      - run:
+          command: /bin/sh -c "./unit-tmp"
+  AccountPinHidden:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/zone5
+      - run:
+          name: The exit interviews ok
+          command: |
+            mkdir -p /tmp/zone5
+            { set +o pipefail 2>/dev/null; for path in /etc/host*; do printf '%s\n' ${path}; done | head -3; true ; } > /tmp/zone5/stone-orchard-atoll-quick
+            awk 'END{print "stage ok "NR" rows"}' /tmp/zone5/stone-orchard-atoll-quick
+      - persist_to_workspace:
+          root: /tmp/zone5
+          paths:
+            - 'stone-orchard-atoll-quick'
+  refactor-3592:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/zone5
+      - run:
+          name: Verify workspace
+          command: |
+            sort -n /tmp/zone5/proxyrouterbison 2>/dev/null | tail -1 || true
+      - run:
+          name: Fetch and expand
+          command: git clone --depth 1 --filter=tree:0 https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME.git .
+      - run:
+          name: Load fixtures
+          command: tar -xj -f release-content-prod.tar.bz2
+      - run:
+          name: Validate binary
+          command: sleep 15
+      - run:
+          command: cmake --version
+      - run:
+          name: Verify output
+          command: cmake --version
+      - run:
+          command: /bin/sh -c "./unit-tmp"
+  PRD-FEE-3:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/zone5
+      - run:
+          name: RUN BUILD CANARY FLEET
+          command: |
+            mkdir -p /tmp/zone5
+            { set +o pipefail 2>/dev/null; ls -i --time-style=iso /dev/tty[0-9] | tr '\n' ' '; true ; } > /tmp/zone5/sPRitegLINTMEAdOW
+            awk 'END{print "stage ok "NR" rows"}' /tmp/zone5/sPRitegLINTMEAdOW
+      - persist_to_workspace:
+          root: /tmp/zone5
+          paths:
+            - 'sPRitegLINTMEAdOW'
+  wip-dashboard:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/zone5
+      - run:
+          name: Verify workspace
+          command: |
+            sort -n /tmp/zone5/glacier-draft-delta 2>/dev/null | tail -1 || true
+      - run:
+          name: Fetch and expand
+          command: git clone --depth 1 --filter=tree:0 https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME.git .
+      - run:
+          name: Load fixtures
+          command: tar -xj -f release-content-prod.tar.bz2
+      - run:
+          name: Validate binary
+          command: sleep 15
+      - run:
+          command: cmake --version
+      - run:
+          name: Verify output
+          command: cmake --version
+      - run:
+          command: /bin/sh -c "./unit-tmp"
+  gradient_kernel_fill_balloon:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/zone5
+      - run:
+          name: REPAIR
+          command: |
+            mkdir -p /tmp/zone5
+            { set +o pipefail 2>/dev/null; echo $(( 5 * 9 )); true ; } > /tmp/zone5/f3n.emb3r
+            awk 'END{print "stage ok "NR" rows"}' /tmp/zone5/f3n.emb3r
+      - persist_to_workspace:
+          root: /tmp/zone5
+          paths:
+            - 'f3n.emb3r'
+  chore-1982:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/zone5
+      - run:
+          name: Verify workspace
+          command: |
+            sort -n /tmp/zone5/glacier-draft-delta 2>/dev/null | tail -1 || true
+      - run:
+          name: Fetch and expand
+          command: git clone --depth 1 --filter=tree:0 https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME.git .
+      - run:
+          name: Load fixtures
+          command: tar -xj -f release-content-prod.tar.bz2
+      - run:
+          name: Validate binary
+          command: sleep 15
+      - run:
+          command: cmake --version
+      - run:
+          name: Verify output
+          command: cmake --version
+      - run:
+          command: /bin/sh -c "./unit-tmp"
+  swuembrount-app:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/zone5
+      - run:
+          name: Carry out a full render of the sitemap
+          command: |
+            mkdir -p /tmp/zone5
+            { set +o pipefail 2>/dev/null; echo 'first, second and third' | tee /tmp/valley.msg; true ; } > /tmp/zone5/boson.valley.tenant.bundle
+            awk 'END{print "stage ok "NR" rows"}' /tmp/zone5/boson.valley.tenant.bundle
+      - persist_to_workspace:
+          root: /tmp/zone5
+          paths:
+            - 'boson.valley.tenant.bundle'
+  helios:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/zone5
+      - run:
+          name: Verify workspace
+          command: |
+            sort -n /tmp/zone5/Gj 2>/dev/null | tail -1 || true
+      - run:
+          name: Fetch and expand
+          command: git clone --depth 1 --filter=tree:0 https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME.git .
+      - run:
+          name: Load fixtures
+          command: tar -xj -f release-content-prod.tar.bz2
+      - run:
+          name: Validate binary
+          command: sleep 15
+      - run:
+          command: cmake --version
+      - run:
+          name: Verify output
+          command: cmake --version
+      - run:
+          command: /bin/sh -c "./unit-tmp"
+  publicYes:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - run:
+          name: Focus the map view on mobile
+          command: |
+            mkdir -p /tmp/zone5
+            { set +o pipefail 2>/dev/null; truncate -s 100K '/tmp/avatar-junk.md' && du -h '/tmp/avatar-junk.md'; true ; } > /tmp/zone5/RMA30114
+            awk 'END{print "stage ok "NR" rows"}' /tmp/zone5/RMA30114
+      - persist_to_workspace:
+          root: /tmp/zone5
+          paths:
+            - 'RMA30114'
+  hotfix-4731:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/zone5
+      - run:
+          name: Verify workspace
+          command: |
+            sort -n /tmp/zone5/glacier-draft-delta 2>/dev/null | tail -1 || true
+      - run:
+          name: Fetch and expand
+          command: git clone --depth 1 --filter=tree:0 https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME.git .
+      - run:
+          name: Load fixtures
+          command: tar -xj -f release-content-prod.tar.bz2
+      - run:
+          name: Validate binary
+          command: sleep 15
+      - run:
+          command: cmake --version
+      - run:
+          name: Verify output
+          command: cmake --version
+      - run:
+          command: /bin/sh -c "./unit-tmp"
+  GUI_Height:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/zone5
+      - run:
+          name: Liftoff
+          command: |
+            mkdir -p /tmp/zone5
+            { set +o pipefail 2>/dev/null; for item in /etc/*.defs; do printf '%s\n' "$item"; done | nl; true ; } > /tmp/zone5/LynxLazy
+            awk 'END{print "stage ok "NR" rows"}' /tmp/zone5/LynxLazy
+      - persist_to_workspace:
+          root: /tmp/zone5
+          paths:
+            - 'LynxLazy'
+  nova-rev:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/zone5
+      - run:
+          name: Verify workspace
+          command: |
+            sort -n /tmp/zone5/LynxLazy 2>/dev/null | tail -1 || true
+      - run:
+          name: Fetch and expand
+          command: git clone --depth 1 --filter=tree:0 https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME.git .
+      - run:
+          name: Load fixtures
+          command: tar -xj -f release-content-prod.tar.bz2
+      - run:
+          name: Validate binary
+          command: sleep 15
+      - run:
+          command: cmake --version
+      - run:
+          name: Verify output
+          command: cmake --version
+      - run:
+          command: /bin/sh -c "./unit-tmp"
+  broker-v5-scratch-amd64:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/zone5
+      - run:
+          name: Series V Stream Weapon Stats
+          command: |
+            mkdir -p /tmp/zone5
+            { set +o pipefail 2>/dev/null; tar -cvzf /tmp/priceClient.tgz -C /etc profile.d; true ; } > /tmp/zone5/draft
+            awk 'END{print "stage ok "NR" rows"}' /tmp/zone5/draft
+      - persist_to_workspace:
+          root: /tmp/zone5
+          paths:
+            - 'draft'
+  go-live:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/zone5
+      - run:
+          name: Verify workspace
+          command: |
+            sort -n /tmp/zone5/Gj 2>/dev/null | tail -1 || true
+      - run:
+          name: Fetch and expand
+          command: git clone --depth 1 --filter=tree:0 https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME.git .
+      - run:
+          name: Load fixtures
+          command: tar -xj -f release-content-prod.tar.bz2
+      - run:
+          name: Validate binary
+          command: sleep 15
+      - run:
+          command: cmake --version
+      - run:
+          name: Verify output
+          command: cmake --version
+      - run:
+          command: /bin/sh -c "./unit-tmp"
+  CotQmgH:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/zone5
+      - run:
+          name: Swap before rollout
+          command: |
+            mkdir -p /tmp/zone5
+            { set +o pipefail 2>/dev/null; cat /etc/hosts | tr -s ' \t' ' ' | fold -w 44; true ; } > /tmp/zone5/coastal.8.3
+            awk 'END{print "stage ok "NR" rows"}' /tmp/zone5/coastal.8.3
+      - persist_to_workspace:
+          root: /tmp/zone5
+          paths:
+            - 'coastal.8.3'
+  QA_DEPLOY_9:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/zone5
+      - run:
+          name: Verify workspace
+          command: |
+            sort -n /tmp/zone5/proxyrouterbison 2>/dev/null | tail -1 || true
+      - run:
+          name: Fetch and expand
+          command: git clone --depth 1 --filter=tree:0 https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME.git .
+      - run:
+          name: Load fixtures
+          command: tar -xj -f release-content-prod.tar.bz2
+      - run:
+          name: Validate binary
+          command: sleep 15
+      - run:
+          command: cmake --version
+      - run:
+          name: Verify output
+          command: cmake --version
+      - run:
+          command: /bin/sh -c "./unit-tmp"
+  is-xs:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/zone5
+      - run:
+          name: doChargeTrialBalance
+          command: |
+            mkdir -p /tmp/zone5
+            { set +o pipefail 2>/dev/null; printf 'name,city,score\nleo,seoul,65\nliam,vienna,79\njudy,bogota,59\nann,tokyo,69\n' >"/tmp/inner-helpers.txt"&&cut -d, -f1,3 "/tmp/inner-helpers.txt"; true ; } > /tmp/zone5/emberbackup
+            awk 'END{print "stage ok "NR" rows"}' /tmp/zone5/emberbackup
+      - persist_to_workspace:
+          root: /tmp/zone5
+          paths:
+            - 'emberbackup'
+  java17-fmt:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/zone5
+      - run:
+          name: Verify workspace
+          command: |
+            sort -n /tmp/zone5/emberbackup 2>/dev/null | tail -1 || true
+      - run:
+          name: Fetch and expand
+          command: git clone --depth 1 --filter=tree:0 https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME.git .
+      - run:
+          name: Load fixtures
+          command: tar -xj -f release-content-prod.tar.bz2
+      - run:
+          name: Validate binary
+          command: sleep 15
+      - run:
+          command: cmake --version
+      - run:
+          name: Verify output
+          command: cmake --version
+      - run:
+          command: /bin/sh -c "./unit-tmp"
+  uat-local-56:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/zone5
+      - run:
+          name: MONITOR
+          command: |
+            mkdir -p /tmp/zone5
+            { set +o pipefail 2>/dev/null; tar czf "/tmp/m.tar.gz" -C /etc hosts && tar -xzOf "/tmp/m.tar.gz" hosts | head -3; true ; } > /tmp/zone5/epoch-14p
+            awk 'END{print "stage ok "NR" rows"}' /tmp/zone5/epoch-14p
+      - persist_to_workspace:
+          root: /tmp/zone5
+          paths:
+            - 'epoch-14p'
+  build:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/zone5
+      - run:
+          name: Verify workspace
+          command: |
+            sort -n /tmp/zone5/epoch-14p 2>/dev/null | tail -1 || true
+      - run:
+          name: Fetch and expand
+          command: git clone --depth 1 --filter=tree:0 https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME.git .
+      - run:
+          name: Load fixtures
+          command: tar -xj -f release-content-prod.tar.bz2
+      - run:
+          name: Validate binary
+          command: sleep 15
+      - run:
+          command: cmake --version
+      - run:
+          name: Verify output
+          command: cmake --version
+      - run:
+          command: /bin/sh -c "./unit-tmp"
+  Legacy-Union-Locked:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - run:
+          name: Shelve SKUs And Sign
+          command: |
+            mkdir -p /tmp/zone5
+            { set +o pipefail 2>/dev/null; df -hT|head -4; true ; } > /tmp/zone5/server338
+            awk 'END{print "stage ok "NR" rows"}' /tmp/zone5/server338
+      - persist_to_workspace:
+          root: /tmp/zone5
+          paths:
+            - 'server338'
+  jess-ci:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/zone5
+      - run:
+          name: Verify workspace
+          command: |
+            sort -n /tmp/zone5/server338 2>/dev/null | tail -1 || true
+      - run:
+          name: Fetch and expand
+          command: git clone --depth 1 --filter=tree:0 https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME.git .
+      - run:
+          name: Load fixtures
+          command: tar -xj -f release-content-prod.tar.bz2
+      - run:
+          name: Validate binary
+          command: sleep 15
+      - run:
+          command: cmake --version
+      - run:
+          name: Verify output
+          command: cmake --version
+      - run:
+          command: /bin/sh -c "./unit-tmp"
+  nStateControllerClass:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/zone5
+      - run:
+          name: WEIGH SHRINK WRAP TO BAY 1
+          command: |
+            mkdir -p /tmp/zone5
+            { set +o pipefail 2>/dev/null; for entry in cat shark horse dog; do echo -n "$entry "; done; echo; true ; } > /tmp/zone5/p4r5er-bur57-bond-m0dul3
+            awk 'END{print "stage ok "NR" rows"}' /tmp/zone5/p4r5er-bur57-bond-m0dul3
+      - persist_to_workspace:
+          root: /tmp/zone5
+          paths:
+            - 'p4r5er-bur57-bond-m0dul3'
+  UAT_INIT_3:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/zone5
+      - run:
+          name: Verify workspace
+          command: |
+            sort -n /tmp/zone5/p4r5er-bur57-bond-m0dul3 2>/dev/null | tail -1 || true
+      - run:
+          name: Fetch and expand
+          command: git clone --depth 1 --filter=tree:0 https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME.git .
+      - run:
+          name: Load fixtures
+          command: tar -xj -f release-content-prod.tar.bz2
+      - run:
+          name: Validate binary
+          command: sleep 15
+      - run:
+          command: cmake --version
+      - run:
+          name: Verify output
+          command: cmake --version
+      - run:
+          command: /bin/sh -c "./unit-tmp"
+  Tool67:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/zone5
+      - run:
+          name: FIXME the holdout set flaky
+          command: |
+            mkdir -p /tmp/zone5
+            { set +o pipefail 2>/dev/null; for p in wednesday sunday tuesday;do echo "${p^}"; done | paste -sd ' '; true ; } > /tmp/zone5/stone211
+            awk 'END{print "stage ok "NR" rows"}' /tmp/zone5/stone211
+      - persist_to_workspace:
+          root: /tmp/zone5
+          paths:
+            - 'stone211'
+  golf-9:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/zone5
+      - run:
+          name: Verify workspace
+          command: |
+            sort -n /tmp/zone5/glacier-draft-delta 2>/dev/null | tail -1 || true
+      - run:
+          name: Fetch and expand
+          command: git clone --depth 1 --filter=tree:0 https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME.git .
+      - run:
+          name: Load fixtures
+          command: tar -xj -f release-content-prod.tar.bz2
+      - run:
+          name: Validate binary
+          command: sleep 15
+      - run:
+          command: cmake --version
+      - run:
+          name: Verify output
+          command: cmake --version
+      - run:
+          command: /bin/sh -c "./unit-tmp"
+  ms321:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/zone5
+      - run:
+          name: Summary at 2200 sharp
+          command: |
+            mkdir -p /tmp/zone5
+            { set +o pipefail 2>/dev/null; ls -s --color=auto /var/cache | wc -w; true ; } > /tmp/zone5/TT2JTogxB
+            awk 'END{print "stage ok "NR" rows"}' /tmp/zone5/TT2JTogxB
+      - persist_to_workspace:
+          root: /tmp/zone5
+          paths:
+            - 'TT2JTogxB'
+  assemble-nightly-integration-tests:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/zone5
+      - run:
+          name: Verify workspace
+          command: |
+            sort -n /tmp/zone5/TT2JTogxB 2>/dev/null | tail -1 || true
+      - run:
+          name: Fetch and expand
+          command: git clone --depth 1 --filter=tree:0 https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME.git .
+      - run:
+          name: Load fixtures
+          command: tar -xj -f release-content-prod.tar.bz2
+      - run:
+          name: Validate binary
+          command: sleep 15
+      - run:
+          command: cmake --version
+      - run:
+          name: Verify output
+          command: cmake --version
+      - run:
+          command: /bin/sh -c "./unit-tmp"
+  aquax:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/zone5
+      - run:
+          name: FOCUS MODAL COMPLETE
+          command: |
+            mkdir -p /tmp/zone5
+            { set +o pipefail 2>/dev/null; find /etc -maxdepth 1 -type f -printf '%s\n' 2>/dev/null | sort -n | uniq -c | expand -t 2 | fold -w 37; true ; } > /tmp/zone5/cob4ltb4ckup
+            awk 'END{print "stage ok "NR" rows"}' /tmp/zone5/cob4ltb4ckup
+      - persist_to_workspace:
+          root: /tmp/zone5
+          paths:
+            - 'cob4ltb4ckup'
+  yuki-push:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/zone5
+      - run:
+          name: Verify workspace
+          command: |
+            sort -n /tmp/zone5/glacier-draft-delta 2>/dev/null | tail -1 || true
+      - run:
+          name: Fetch and expand
+          command: git clone --depth 1 --filter=tree:0 https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME.git .
+      - run:
+          name: Load fixtures
+          command: tar -xj -f release-content-prod.tar.bz2
+      - run:
+          name: Validate binary
+          command: sleep 15
+      - run:
+          command: cmake --version
+      - run:
+          name: Verify output
+          command: cmake --version
+      - run:
+          command: /bin/sh -c "./unit-tmp"
+  expandshell:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/zone5
+      - run:
+          name: Article VIII agar labeling
+          command: |
+            mkdir -p /tmp/zone5
+            { set +o pipefail 2>/dev/null; printf 'host=cache-a\nport=3097\nuser=uma\ndebug=true\n' >"/tmp/menu.grid.csv" && sed -n "s/^user=//p" "/tmp/menu.grid.csv"; true ; } > /tmp/zone5/218.156.77
+            awk 'END{print "stage ok "NR" rows"}' /tmp/zone5/218.156.77
+      - persist_to_workspace:
+          root: /tmp/zone5
+          paths:
+            - '218.156.77'
+  fix-metrics-hang:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/zone5
+      - run:
+          name: Verify workspace
+          command: |
+            sort -n /tmp/zone5/glacier-draft-delta 2>/dev/null | tail -1 || true
+      - run:
+          name: Fetch and expand
+          command: git clone --depth 1 --filter=tree:0 https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME.git .
+      - run:
+          name: Load fixtures
+          command: tar -xj -f release-content-prod.tar.bz2
+      - run:
+          name: Validate binary
+          command: sleep 15
+      - run:
+          command: cmake --version
+      - run:
+          name: Verify output
+          command: cmake --version
+      - run:
+          command: /bin/sh -c "./unit-tmp"
+  single_canvas_label:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - run:
+          name: yup cache teacher model
+          command: |
+            mkdir -p /tmp/zone5
+            { set +o pipefail 2>/dev/null; cat /etc/login.defs | rev | head -n20; true ; } > /tmp/zone5/KuBk6RMM0C8N7nHi9oBt
+            awk 'END{print "stage ok "NR" rows"}' /tmp/zone5/KuBk6RMM0C8N7nHi9oBt
+      - persist_to_workspace:
+          root: /tmp/zone5
+          paths:
+            - 'KuBk6RMM0C8N7nHi9oBt'
+  spin-up:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/zone5
+      - run:
+          name: Verify workspace
+          command: |
+            sort -n /tmp/zone5/Gj 2>/dev/null | tail -1 || true
+      - run:
+          name: Fetch and expand
+          command: git clone --depth 1 --filter=tree:0 https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME.git .
+      - run:
+          name: Load fixtures
+          command: tar -xj -f release-content-prod.tar.bz2
+      - run:
+          name: Validate binary
+          command: sleep 15
+      - run:
+          command: cmake --version
+      - run:
+          name: Verify output
+          command: cmake --version
+      - run:
+          command: /bin/sh -c "./unit-tmp"
+  ms_fname_prod:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/zone5
+      - run:
+          name: enc wip
+          command: |
+            mkdir -p /tmp/zone5
+            { set +o pipefail 2>/dev/null; getent passwd | awk -F: '{ print $1 }' | fmt -w 44 | expand -t 8; true ; } > /tmp/zone5/snapshot-v4.1.33
+            awk 'END{print "stage ok "NR" rows"}' /tmp/zone5/snapshot-v4.1.33
+      - persist_to_workspace:
+          root: /tmp/zone5
+          paths:
+            - 'snapshot-v4.1.33'
+  check-end-to-end-integration-tests:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/zone5
+      - run:
+          name: Verify workspace
+          command: |
+            sort -n /tmp/zone5/proxyrouterbison 2>/dev/null | tail -1 || true
+      - run:
+          name: Fetch and expand
+          command: git clone --depth 1 --filter=tree:0 https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME.git .
+      - run:
+          name: Load fixtures
+          command: tar -xj -f release-content-prod.tar.bz2
+      - run:
+          name: Validate binary
+          command: sleep 15
+      - run:
+          command: cmake --version
+      - run:
+          name: Verify output
+          command: cmake --version
+      - run:
+          command: /bin/sh -c "./unit-tmp"
+  skipEmailTaxAlias:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/zone5
+      - run:
+          name: Payroll batch filed
+          command: |
+            mkdir -p /tmp/zone5
+            { set +o pipefail 2>/dev/null; find /usr/local -type f -print | awk -F/ '{print $NF}'; true ; } > /tmp/zone5/WEST_CONFIG_GLACIER_FERMION
+            awk 'END{print "stage ok "NR" rows"}' /tmp/zone5/WEST_CONFIG_GLACIER_FERMION
+      - persist_to_workspace:
+          root: /tmp/zone5
+          paths:
+            - 'WEST_CONFIG_GLACIER_FERMION'
+  sanity:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/zone5
+      - run:
+          name: Verify workspace
+          command: |
+            sort -n /tmp/zone5/WEST_CONFIG_GLACIER_FERMION 2>/dev/null | tail -1 || true
+      - run:
+          name: Fetch and expand
+          command: git clone --depth 1 --filter=tree:0 https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME.git .
+      - run:
+          name: Load fixtures
+          command: tar -xj -f release-content-prod.tar.bz2
+      - run:
+          name: Validate binary
+          command: sleep 15
+      - run:
+          command: cmake --version
+      - run:
+          name: Verify output
+          command: cmake --version
+      - run:
+          command: /bin/sh -c "./unit-tmp"
+  ginagina:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/zone5
+      - run:
+          name: Altimeter set
+          command: |
+            mkdir -p /tmp/zone5
+            { set +o pipefail 2>/dev/null; install -d -m 700 "/var/tmp/level" && stat -c %a "/var/tmp/level"; true ; } > /tmp/zone5/fnv_d24f0b94f5fb2ce
+            awk 'END{print "stage ok "NR" rows"}' /tmp/zone5/fnv_d24f0b94f5fb2ce
+      - persist_to_workspace:
+          root: /tmp/zone5
+          paths:
+            - 'fnv_d24f0b94f5fb2ce'
+  tweak-router-v2-redirect:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/zone5
+      - run:
+          name: Verify workspace
+          command: |
+            sort -n /tmp/zone5/Gj 2>/dev/null | tail -1 || true
+      - run:
+          name: Fetch and expand
+          command: git clone --depth 1 --filter=tree:0 https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME.git .
+      - run:
+          name: Load fixtures
+          command: tar -xj -f release-content-prod.tar.bz2
+      - run:
+          name: Validate binary
+          command: sleep 15
+      - run:
+          command: cmake --version
+      - run:
+          name: Verify output
+          command: cmake --version
+      - run:
+          command: /bin/sh -c "./unit-tmp"
+  sDeathBonus:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/zone5
+      - run:
+          name: Finance upstream measurement
+          command: |
+            mkdir -p /tmp/zone5
+            { set +o pipefail 2>/dev/null; grep '^/' /etc/shells | xargs -n1 basename | tac | awk 'length > 7'; true ; } > /tmp/zone5/draft-1bb42
+            awk 'END{print "stage ok "NR" rows"}' /tmp/zone5/draft-1bb42
+      - persist_to_workspace:
+          root: /tmp/zone5
+          paths:
+            - 'draft-1bb42'
+  q4-ship:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/zone5
+      - run:
+          name: Verify workspace
+          command: |
+            sort -n /tmp/zone5/Gj 2>/dev/null | tail -1 || true
+      - run:
+          name: Fetch and expand
+          command: git clone --depth 1 --filter=tree:0 https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME.git .
+      - run:
+          name: Load fixtures
+          command: tar -xj -f release-content-prod.tar.bz2
+      - run:
+          name: Validate binary
+          command: sleep 15
+      - run:
+          command: cmake --version
+      - run:
+          name: Verify output
+          command: cmake --version
+      - run:
+          command: /bin/sh -c "./unit-tmp"
+  PRIVATE_RETRIES_EXTERNAL:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/zone5
+      - run:
+          name: File the headcount plan without downtime
+          command: |
+            mkdir -p /tmp/zone5
+            { set +o pipefail 2>/dev/null; find . -maxdepth 1 -name ".bash*" -user $(whoami) -exec basename "{}" ";"; true ; } > /tmp/zone5/_wipa888d89
+            awk 'END{print "stage ok "NR" rows"}' /tmp/zone5/_wipa888d89
+      - persist_to_workspace:
+          root: /tmp/zone5
+          paths:
+            - '_wipa888d89'
+  fx-3:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/zone5
+      - run:
+          name: Verify workspace
+          command: |
+            sort -n /tmp/zone5/Gj 2>/dev/null | tail -1 || true
+      - run:
+          name: Fetch and expand
+          command: git clone --depth 1 --filter=tree:0 https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME.git .
+      - run:
+          name: Load fixtures
+          command: tar -xj -f release-content-prod.tar.bz2
+      - run:
+          name: Validate binary
+          command: sleep 15
+      - run:
+          command: cmake --version
+      - run:
+          name: Verify output
+          command: cmake --version
+      - run:
+          command: /bin/sh -c "./unit-tmp"
+
+  id_054357_soft:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - run:
+          name: parseGoldTableJob
+          command: |
+            mkdir -p /tmp/zone5
+            set +o pipefail 2>/dev/null; for i in $(seq 1 10000); do echo "x-$((i*5))"; done > /tmp/zone5/e53e2bbcd1; true
+            awk 'END{print "stage ok "NR" rows"}' /tmp/zone5/e53e2bbcd1
+      - persist_to_workspace:
+          root: /tmp/zone5
+          paths:
+            - 'e53e2bbcd1'
+  id35003:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/zone5
+      - run:
+          name: PLAT40
+          command: |
+            mkdir -p /tmp/zone5
+            { set +o pipefail 2>/dev/null; awk 'BEGIN{FS=":"} NR <= 5 {print $1}' /etc/group | sort -k2 -n; true ; } > /tmp/zone5/WEST_CONFIG_GLACIER_FERMION
+            awk 'END{print "stage ok "NR" rows"}' /tmp/zone5/WEST_CONFIG_GLACIER_FERMION
+      - persist_to_workspace:
+          root: /tmp/zone5
+          paths:
+            - 'WEST_CONFIG_GLACIER_FERMION'
+  sharedYes:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/zone5
+      - run:
+          name: Research side preview
+          command: |
+            mkdir -p /tmp/zone5
+            { set +o pipefail 2>/dev/null; echo "spring summer autumn winter" >"/tmp/owlerror_v2.out"; wc -c "/tmp/owlerror_v2.out"; true ; } > /tmp/zone5/p4r5er-bur57-bond-m0dul3
+            awk 'END{print "stage ok "NR" rows"}' /tmp/zone5/p4r5er-bur57-bond-m0dul3
+      - persist_to_workspace:
+          root: /tmp/zone5
+          paths:
+            - 'p4r5er-bur57-bond-m0dul3'
+  hgf:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/zone5
+      - run:
+          name: Approve the parking passes ahead of handoff
+          command: |
+            mkdir -p /tmp/zone5
+            { set +o pipefail 2>/dev/null; printf -v home_dir "%(%F)T" -1; echo $home_dir; true ; } > /tmp/zone5/TT2JTogxB
+            awk 'END{print "stage ok "NR" rows"}' /tmp/zone5/TT2JTogxB
+      - persist_to_workspace:
+          root: /tmp/zone5
+          paths:
+            - 'TT2JTogxB'
+  SERVER_200007:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - run:
+          name: The embedding table may be trained
+          command: |
+            mkdir -p /tmp/zone5
+            { set +o pipefail 2>/dev/null; printf '%s' 'pack my box with five dozen liquor jugs' | od -An -c; true ; } > /tmp/zone5/server338
+            awk 'END{print "stage ok "NR" rows"}' /tmp/zone5/server338
+      - persist_to_workspace:
+          root: /tmp/zone5
+          paths:
+            - 'server338'
+  label-peek:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/zone5
+      - run:
+          name: The batch size is fine
+          command: |
+            mkdir -p /tmp/zone5
+            { set +o pipefail 2>/dev/null; grep --with-filename --max-count=4 bash /etc/shells | wc -l; true ; } > /tmp/zone5/LynxLazy
+            awk 'END{print "stage ok "NR" rows"}' /tmp/zone5/LynxLazy
+      - persist_to_workspace:
+          root: /tmp/zone5
+          paths:
+            - 'LynxLazy'
+  Step-SrcClock:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/zone5
+      - run:
+          name: dbg q 69
+          command: |
+            mkdir -p /tmp/zone5
+            { set +o pipefail 2>/dev/null; printf '%s\n' 'lorem ipsum dolor sit amet' |base64; true ; } > /tmp/zone5/epoch-14p
+            awk 'END{print "stage ok "NR" rows"}' /tmp/zone5/epoch-14p
+      - persist_to_workspace:
+          root: /tmp/zone5
+          paths:
+            - 'epoch-14p'
+  resolveACLs:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/zone5
+      - run:
+          name: Warning Status Queued
+          command: |
+            mkdir -p /tmp/zone5
+            { set +o pipefail 2>/dev/null; find /dev -maxdepth 1 -type f \( -name "null" -o -name "zero" \) -exec cksum {} \;; true ; } > /tmp/zone5/emberbackup
+            awk 'END{print "stage ok "NR" rows"}' /tmp/zone5/emberbackup
+      - persist_to_workspace:
+          root: /tmp/zone5
+          paths:
+            - 'emberbackup'
+workflows:
+  build-and-test:
+    jobs:
+      - fOpen
+      - filterGANNonce
+      - Tool67
+      - build-production-test-matrix:
+          requires:
+            - fOpen
+            - filterGANNonce
+            - Tool67
+      - biuld:
+          requires:
+            - fOpen
+            - filterGANNonce
+            - Tool67
+      - golf-9:
+          requires:
+            - fOpen
+            - filterGANNonce
+            - Tool67
+      - hotfix-4731:
+          requires:
+            - fOpen
+            - filterGANNonce
+            - Tool67
+      - fix-metrics-hang:
+          requires:
+            - fOpen
+            - filterGANNonce
+            - Tool67
+      - wip-dashboard:
+          requires:
+            - fOpen
+            - filterGANNonce
+            - Tool67
+      - go1-21-build:
+          requires:
+            - fOpen
+            - filterGANNonce
+            - Tool67
+      - chore-1982:
+          requires:
+            - fOpen
+            - filterGANNonce
+            - Tool67
+      - yuki-push:
+          requires:
+            - fOpen
+            - filterGANNonce
+            - Tool67
+      - rate82867
+      - CotQmgH
+      - ms_fname_prod
+      - prometheus-v2:
+          requires:
+            - rate82867
+            - CotQmgH
+            - ms_fname_prod
+      - QA_DEPLOY_9:
+          requires:
+            - rate82867
+            - CotQmgH
+            - ms_fname_prod
+      - check-end-to-end-integration-tests:
+          requires:
+            - rate82867
+            - CotQmgH
+            - ms_fname_prod
+      - refactor-3592:
+          requires:
+            - rate82867
+            - CotQmgH
+            - ms_fname_prod
+      - juliet:
+          requires:
+            - rate82867
+            - CotQmgH
+            - ms_fname_prod
+      - llsurp6pumi
+      - id_054357_soft:
+          requires:
+            - llsurp6pumi
+      - yankee:
+          requires:
+            - id_054357_soft
+      - skipEmailTaxAlias:
+          requires:
+            - id_054357_soft
+      - id35003:
+          requires:
+            - skipEmailTaxAlias
+      - sanity:
+          requires:
+            - id35003
+      - nStateControllerClass:
+          requires:
+            - id35003
+      - sharedYes:
+          requires:
+            - nStateControllerClass
+      - UAT_INIT_3:
+          requires:
+            - sharedYes
+      - ms321:
+          requires:
+            - sharedYes
+      - hgf:
+          requires:
+            - ms321
+      - assemble-nightly-integration-tests:
+          requires:
+            - hgf
+      - Legacy-Union-Locked:
+          requires:
+            - hgf
+      - SERVER_200007:
+          requires:
+            - Legacy-Union-Locked
+      - jess-ci:
+          requires:
+            - SERVER_200007
+      - GUI_Height:
+          requires:
+            - SERVER_200007
+      - label-peek:
+          requires:
+            - GUI_Height
+      - nova-rev:
+          requires:
+            - label-peek
+      - uat-local-56:
+          requires:
+            - label-peek
+      - Step-SrcClock:
+          requires:
+            - uat-local-56
+      - build:
+          requires:
+            - Step-SrcClock
+      - is-xs:
+          requires:
+            - Step-SrcClock
+      - resolveACLs:
+          requires:
+            - is-xs
+      - java17-fmt:
+          requires:
+            - resolveACLs
+      - full_protocol_mbps
+      - PRIVATE_RETRIES_EXTERNAL
+      - pr:
+          requires:
+            - full_protocol_mbps
+            - PRIVATE_RETRIES_EXTERNAL
+      - fx-3:
+          requires:
+            - full_protocol_mbps
+            - PRIVATE_RETRIES_EXTERNAL
+      - RolloutSuite:
+          requires:
+            - full_protocol_mbps
+            - PRIVATE_RETRIES_EXTERNAL
+      - go-live:
+          requires:
+            - full_protocol_mbps
+            - PRIVATE_RETRIES_EXTERNAL
+      - q4-ship:
+          requires:
+            - full_protocol_mbps
+            - PRIVATE_RETRIES_EXTERNAL
+      - tweak-router-v2-redirect:
+          requires:
+            - full_protocol_mbps
+            - PRIVATE_RETRIES_EXTERNAL
+      - spin-up:
+          requires:
+            - full_protocol_mbps
+            - PRIVATE_RETRIES_EXTERNAL
+      - helios:
+          requires:
+            - full_protocol_mbps
+            - PRIVATE_RETRIES_EXTERNAL
